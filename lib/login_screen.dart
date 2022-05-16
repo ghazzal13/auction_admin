@@ -1,6 +1,5 @@
 import 'package:auction_admin/start_screen.dart';
 import 'package:auction_admin/utils/global_variable.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -95,19 +94,19 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                 ),
-                Container(
-                  alignment: Alignment.bottomRight,
-                  child: TextButton(
-                      onPressed: () {},
-                      child: const Text(
-                        'Forget Password',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      )),
-                ),
+                // Container(
+                //   alignment: Alignment.bottomRight,
+                //   child: TextButton(
+                //       onPressed: () {},
+                //       child: const Text(
+                //         'Forget Password',
+                //         style: TextStyle(
+                //           color: Colors.black,
+                //           fontSize: 16,
+                //           fontWeight: FontWeight.w500,
+                //         ),
+                //       )),
+                // ),
                 Padding(
                   padding: const EdgeInsets.all(20),
                   child: Container(

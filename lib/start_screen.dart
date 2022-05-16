@@ -2,8 +2,8 @@ import 'package:auction_admin/cubit/cubit.dart';
 import 'package:auction_admin/cubit/states.dart';
 import 'package:auction_admin/home_screens/main_management_categories_screen.dart';
 import 'package:auction_admin/home_screens/managment_clients_screen.dart';
-import 'package:auction_admin/posts_screens/mangement_post_screen.dart';
-import 'package:auction_admin/home_screens/request_screen.dart';
+import 'package:auction_admin/home_screens/mangement_post_screen.dart';
+import 'package:auction_admin/home_screens/management_request_screen.dart';
 import 'package:auction_admin/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,7 +20,7 @@ class _StartScreenState extends State<StartScreen> {
     ManagmentClientsScreen(),
     RequestScreen(),
     ManagementPostScreen(),
-    MainManagementCategoriesScreen()
+    ManagementReportsScreen()
   ];
   void onselect(int x) {
     setState(() {
@@ -56,7 +56,7 @@ class _StartScreenState extends State<StartScreen> {
               ),
               BottomNavigationBarItem(
                 backgroundColor: primaryColor,
-                icon: Icon(Icons.add),
+                icon: Icon(Icons.gif_box),
                 label: 'Posts',
               ),
               BottomNavigationBarItem(

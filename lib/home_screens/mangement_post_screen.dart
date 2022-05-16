@@ -1,8 +1,9 @@
+import 'package:auction_admin/posts_screens/management_post_trade.dart';
 import 'package:flutter/material.dart';
 
-import 'package:auction_admin/home_screens/managemnt_post_online.dart';
+import 'package:auction_admin/posts_screens/management_post_online.dart';
 
-import 'management_post_offline.dart';
+import '../posts_screens/management_post_offline.dart';
 
 class ManagementPostScreen extends StatefulWidget {
   const ManagementPostScreen({Key? key}) : super(key: key);
@@ -45,17 +46,25 @@ class _ManagementPostScreenState extends State<ManagementPostScreen> {
                     )),
                     alignment: Alignment.center,
                     child: const Tab(
-                      text: ('Trade'),
+                      text: ('Online Auction'),
                     )),
                 Container(
+                    decoration: (BoxDecoration(
+                      borderRadius: BorderRadius.circular(30),
+                      border: Border.all(color: Colors.white10, width: 1),
+                    )),
                     alignment: Alignment.center,
                     child: const Tab(
                       text: ('Offline Auction'),
                     )),
                 Container(
+                    decoration: (BoxDecoration(
+                      borderRadius: BorderRadius.circular(30),
+                      border: Border.all(color: Colors.white10, width: 1),
+                    )),
                     alignment: Alignment.center,
                     child: const Tab(
-                      text: ('Online Auction'),
+                      text: ('Trade'),
                     )),
               ]),
         ),
@@ -67,10 +76,9 @@ class _ManagementPostScreenState extends State<ManagementPostScreen> {
           )),
           child: const Center(
             child: TabBarView(children: [
-              // ManagmentPostTradeScreen(),
-              ManagmentPostOfflineScreen(),
-              ManagmentPostOfflineScreen(),
               ManagmentPostOnlineScreen(),
+              ManagmentPostOfflineScreen(),
+              ManagmentPostTradeScreen(),
             ]),
           ),
         ),

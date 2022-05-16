@@ -1,7 +1,7 @@
-import 'package:auction_admin/cubit/cubit.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:auction_admin/request_screens/Request_online_screen.dart';
+import 'package:auction_admin/request_screens/request_offline_screen.dart';
+import 'package:auction_admin/request_screens/trade_request_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class RequestScreen extends StatefulWidget {
   const RequestScreen({Key? key}) : super(key: key);
@@ -13,7 +13,78 @@ class RequestScreen extends StatefulWidget {
 class _RequestScreenState extends State<RequestScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return DefaultTabController(
+      length: 3,
+      child: Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          backgroundColor: Colors.teal,
+          title: const Text(
+            'Request',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+          ),
+          bottom: TabBar(
+              unselectedLabelColor: Colors.green.shade300,
+              indicatorSize: TabBarIndicatorSize.label,
+              indicator: BoxDecoration(
+                gradient: LinearGradient(
+                    colors: [Colors.teal.shade300, Colors.tealAccent.shade400]),
+                borderRadius: BorderRadius.circular(30),
+                // color: Colors.teal.shade200,
+              ),
+              tabs: [
+                Container(
+                    decoration: (BoxDecoration(
+                      borderRadius: BorderRadius.circular(30),
+                      border: Border.all(color: Colors.white10, width: 1),
+                    )),
+                    alignment: Alignment.center,
+                    child: const Tab(
+                      text: ('Online Auction'),
+                    )),
+                Container(
+                    decoration: (BoxDecoration(
+                      borderRadius: BorderRadius.circular(30),
+                      border: Border.all(color: Colors.white10, width: 1),
+                    )),
+                    alignment: Alignment.center,
+                    child: const Tab(
+                      text: ('Offline Auction'),
+                    )),
+                Container(
+                    decoration: (BoxDecoration(
+                      borderRadius: BorderRadius.circular(30),
+                      border: Border.all(color: Colors.white10, width: 1),
+                    )),
+                    alignment: Alignment.center,
+                    child: const Tab(
+                      text: ('Trade'),
+                    )),
+              ]),
+        ),
+        body: Container(
+          decoration: const BoxDecoration(
+              image: DecorationImage(
+            fit: BoxFit.cover,
+            image: AssetImage('assets/BackGround.jpg'),
+          )),
+          child: const Center(
+            child: TabBarView(children: [
+              RequestOnlineScreen(),
+              RequestOfflineScreen(),
+              MainRequestScreen(),
+            ]),
+          ),
+        ),
+      ),
+    );
+  }
+  /*
+    Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: Colors.teal,
@@ -516,72 +587,11 @@ Widget PostCard3({ required dynamic snap, context,}) {
     ),
   );
  }
- 
+ */
 
 
-
-    /*
-    return DefaultTabController(
-      length: 3,
-      child: Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          backgroundColor: Colors.teal,
-          title: const Text(
-            'Request',
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-            ),
-          ),
-          bottom: TabBar(
-              unselectedLabelColor: Colors.green.shade300,
-              indicatorSize: TabBarIndicatorSize.label,
-              indicator: BoxDecoration(
-                gradient: LinearGradient(
-                    colors: [Colors.teal.shade300, Colors.tealAccent.shade400]),
-                borderRadius: BorderRadius.circular(30),
-                // color: Colors.teal.shade200,
-              ),
-              tabs: [
-                Container(
-                    decoration: (BoxDecoration(
-                      borderRadius: BorderRadius.circular(30),
-                      border: Border.all(color: Colors.white10, width: 1),
-                    )),
-                    alignment: Alignment.center,
-                    child: const Tab(
-                      text: ('Trade'),
-                    )),
-                Container(
-                    alignment: Alignment.center,
-                    child: const Tab(
-                      text: ('Offline Auction'),
-                    )),
-                Container(
-                    alignment: Alignment.center,
-                    child: const Tab(
-                      text: ('Online Auction'),
-                    )),
-              ]),
-        ),
-        body: Container(
-          decoration: const BoxDecoration(
-              image: DecorationImage(
-            fit: BoxFit.cover,
-            image: AssetImage('assets/BackGround.jpg'),
-          )),
-          child: const Center(
-            child: TabBarView(children: [
-              MainRequestScreen(),
-              RequestOfflineScreen(),
-              RequestOnlineScreen(),
-            ]),
-          ),
-        ),
-      ),
-    );
+ /*
+   
 
     /*Scaffold(
       resizeToAvoidBottomInset: false,
@@ -887,5 +897,5 @@ Widget PostCard3({ required dynamic snap, context,}) {
     );*/
   }
 }
-*/
-*/
+ */*/
+}

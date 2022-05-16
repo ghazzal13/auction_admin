@@ -1,5 +1,7 @@
-import 'package:auction_admin/screens/offline_posts_screen.dart';
+import 'package:auction_admin/cubit/cubit.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class RequestOfflineScreen extends StatefulWidget {
   const RequestOfflineScreen({Key? key}) : super(key: key);
@@ -12,80 +14,244 @@ class _RequestOfflineScreenState extends State<RequestOfflineScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-      /*appBar: AppBar(
-        backgroundColor: Colors.teal,
-        title: Text(
-          'Offline Auctions',
-          style: TextStyle(
-            fontSize: 20,
-            color: Colors.white,
+      body: Container(
+        decoration: const BoxDecoration(
+            image: DecorationImage(
+          fit: BoxFit.cover,
+          image: AssetImage('assets/BackGround.jpg'),
+        )),
+        child: SingleChildScrollView(
+          child: StreamBuilder(
+            stream:
+                FirebaseFirestore.instance.collection('tickets').snapshots(),
+            builder: (context,
+                AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                print('ConnectionState is waiting');
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              if (snapshot.hasData) {
+                print('ConnectionState is has data');
+              }
+              if (snapshot.hasError) {
+                print('ConnectionState is has error');
+              }
+              return ListView.builder(
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                itemCount: snapshot.data!.docs.length,
+                itemBuilder: (ctx, index) => Container(
+                  margin: const EdgeInsets.symmetric(
+                      // horizontal: width > webScreenSize ? width * 0.3 : 0,
+                      // vertical: width > webScreenSize ? 15 : 0,
+                      ),
+                  child: Usercard(
+                    context: context,
+                    snap: snapshot.data!.docs[index].data(),
+                  ),
+                ),
+              );
+            },
           ),
         ),
-        actions: [
-          PopupMenuButton(
-              color: Colors.teal.withOpacity(0.7),
-              tooltip: 'Menu',
-              child: Icon(
-                Icons.more_vert,
-                size: 28.0,
-                color: Colors.white,
+      ),
+    );
+  }
+}
+
+Widget Usercard({required dynamic snap, context}) {
+  return Padding(
+    padding: const EdgeInsets.all(20.0),
+    child: Column(
+      children: [
+        Row(
+          children: [
+            Stack(
+              children: [
+                CircleAvatar(
+                  radius: 30,
+                  backgroundColor: Colors.teal,
+                  backgroundImage: NetworkImage(
+                    snap['image'].toString(),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(
+              width: 10,
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  snap['name'].toString(),
+                  style: TextStyle(
+                    color: Colors.teal[600],
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                Text(
+                    '${DateFormat.yMd().add_jm().format(snap['datePublished'].toDate())} '),
+              ],
+            ),
+            const Spacer(),
+            PopupMenuButton(
+              onSelected: (value) {
+                if (value.toString() == '/delete') {
+                  showDialog<String>(
+                    context: context,
+                    builder: (BuildContext context) => AlertDialog(
+                      title: const Text("Delete User"),
+                      content: const Text(
+                          "Are you sure you want to Delete This User?"),
+                      actions: <Widget>[
+                        TextButton(
+                          onPressed: () => Navigator.pop(context, 'NO'),
+                          child: const Text('NO'),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            AuctionCubit.get(context)
+                                .deletDoc('users', snap['uid'].toString());
+                            Navigator.pop(context, 'YES');
+                          },
+                          child: const Text('YES'),
+                        ),
+                      ],
+                    ),
+                  );
+                }
+              },
+              itemBuilder: (BuildContext bc) {
+                return const [
+                  PopupMenuItem(
+                    child: Text("delete"),
+                    value: '/delete',
+                  ),
+                ];
+              },
+            ),
+          ],
+        ),
+        Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(
+              height: 5,
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  snap['titel'].toString(),
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.teal[600],
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Text(
+                  snap['address'].toString(),
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.teal[600],
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 5,
+            ),
+            // Container(
+            //   alignment: Alignment.topLeft,
+            //   child: Text(
+            //       ' ${DateFormat.yMd().add_jm().format(snap['startAuction'].toDate())}  '),
+            // ),
+            const SizedBox(
+              height: 5,
+            ),
+            SizedBox(
+              child: Text(
+                snap['description'].toString(),
+                style: TextStyle(
+                  fontSize: 12,
+                  color: Colors.teal[600],
+                  fontWeight: FontWeight.w600,
+                ),
+                maxLines: 5,
+                overflow: TextOverflow.ellipsis,
               ),
-              itemBuilder: (context) => [
-                PopupMenuItem(
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.push(context,MaterialPageRoute(
-                          builder: (context) => RequestOnlineScreen(),
-                        ),
-                        );
-                      },
-                      child: Text(
-                        'Online Auction',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 20,
-                        ),
-                      ),
-                    )),
-                PopupMenuItem(
-                    child: GestureDetector(
-                      onTap: (){
-                        Navigator.push(context,MaterialPageRoute(
-                          builder: (context) => RequestOfflineScreen(),
-                        ),
-                        );
-                      },
-                      child: Text(
-                        'Offline Auction',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 20,
-                        ),
-                      ),
-                    )),
-                PopupMenuItem(
-                    child: GestureDetector(
-                      onTap: (){
-                        Navigator.push(context,MaterialPageRoute(
-                          builder: (context) => RequestScreen(),
-                        ),
-                        );
-                      },
-                      child: Text(
-                        'Trade',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 20,
-                        ),
-                      ),
-                    )),
-              ]),
-        ],
-      ),*/
+            ),
+            const SizedBox(
+              height: 5,
+            ),
+          ],
+        ),
+        Container(
+          width: 200,
+          height: 200,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+                image: NetworkImage(
+                  snap['ticketImage'].toString(),
+                ),
+                fit: BoxFit.cover),
+          ),
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextButton(
+                  onPressed: () {},
+                  child: const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text(
+                      'Cancel',
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextButton(
+                  onPressed: () {},
+                  child: const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text(
+                      'accept',
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        )
+      ],
+    ),
+  );
+}
+
+
+
+  /*
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Container(
         decoration: const BoxDecoration(
             image: DecorationImage(
@@ -315,3 +481,4 @@ class _RequestOfflineScreenState extends State<RequestOfflineScreen> {
     );
   }
 }
+*/
