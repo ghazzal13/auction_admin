@@ -74,73 +74,82 @@ class _ManagmentClientsScreenState extends State<ManagmentClientsScreen> {
 Widget Usercard({required dynamic snap, context}) {
   return Padding(
     padding: const EdgeInsets.all(8.0),
-    child: Row(children: [
-      Stack(
-        children: [
-          CircleAvatar(
-            radius: 30,
-            backgroundColor: Colors.teal,
-            backgroundImage: NetworkImage(
-              snap['image'].toString(),
-            ),
-          ),
-        ],
+    child: Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(2),
+        color: Colors.black12,
       ),
-      const SizedBox(
-        width: 10,
-      ),
-      Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            snap['name'].toString(),
-            style: TextStyle(
-              color: Colors.teal[600],
-              fontSize: 15,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-          // Text(
-          //     '${DateFormat.yMd().add_jm().format(snap['postTime'].toDate())} '),
-        ],
-      ),
-      const Spacer(),
-      PopupMenuButton(
-        onSelected: (value) {
-          if (value.toString() == '/delete') {
-            showDialog<String>(
-              context: context,
-              builder: (BuildContext context) => AlertDialog(
-                title: const Text("Delete User"),
-                content:
-                    const Text("Are you sure you want to Delete This User?"),
-                actions: <Widget>[
-                  TextButton(
-                    onPressed: () => Navigator.pop(context, 'NO'),
-                    child: const Text('NO'),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      AuctionCubit.get(context)
-                          .deletDoc('users', snap['uid'].toString());
-                      Navigator.pop(context, 'YES');
-                    },
-                    child: const Text('YES'),
-                  ),
-                ],
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(children: [
+          Stack(
+            children: [
+              CircleAvatar(
+                radius: 30,
+                backgroundColor: Colors.teal,
+                backgroundImage: NetworkImage(
+                  snap['image'].toString(),
+                ),
               ),
-            );
-          }
-        },
-        itemBuilder: (BuildContext bc) {
-          return const [
-            PopupMenuItem(
-              child: Text("delete"),
-              value: '/delete',
-            ),
-          ];
-        },
+            ],
+          ),
+          const SizedBox(
+            width: 10,
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                snap['name'].toString(),
+                style: TextStyle(
+                  color: Colors.teal[600],
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              // Text(
+              //     '${DateFormat.yMd().add_jm().format(snap['postTime'].toDate())} '),
+            ],
+          ),
+          const Spacer(),
+          PopupMenuButton(
+            onSelected: (value) {
+              if (value.toString() == '/delete') {
+                showDialog<String>(
+                  context: context,
+                  builder: (BuildContext context) => AlertDialog(
+                    title: const Text("Delete User"),
+                    content: const Text(
+                        "Are you sure you want to Delete This User?"),
+                    actions: <Widget>[
+                      TextButton(
+                        onPressed: () => Navigator.pop(context, 'NO'),
+                        child: const Text('NO'),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          AuctionCubit.get(context)
+                              .deletDoc('users', snap['uid'].toString());
+                          Navigator.pop(context, 'YES');
+                        },
+                        child: const Text('YES'),
+                      ),
+                    ],
+                  ),
+                );
+              }
+            },
+            itemBuilder: (BuildContext bc) {
+              return const [
+                PopupMenuItem(
+                  child: Text("delete"),
+                  value: '/delete',
+                ),
+              ];
+            },
+          ),
+        ]),
       ),
-    ]),
+    ),
   );
 }

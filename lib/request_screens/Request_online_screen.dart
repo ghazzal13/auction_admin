@@ -22,7 +22,10 @@ class _RequestOnlineScreenState extends State<RequestOnlineScreen> {
         )),
         child: SingleChildScrollView(
           child: StreamBuilder(
-            stream: FirebaseFirestore.instance.collection('posts').snapshots(),
+            stream: FirebaseFirestore.instance
+                .collection('posts')
+                .where('isWaiting', isEqualTo: true)
+                .snapshots(),
             builder: (context,
                 AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
@@ -63,194 +66,211 @@ class _RequestOnlineScreenState extends State<RequestOnlineScreen> {
 Widget Usercard({required dynamic snap, context}) {
   return Padding(
     padding: const EdgeInsets.all(20.0),
-    child: Column(
-      children: [
-        Row(
+    child: Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(2),
+        color: Colors.black12,
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
           children: [
-            Stack(
+            Row(
               children: [
-                CircleAvatar(
-                  radius: 30,
-                  backgroundColor: Colors.teal,
-                  backgroundImage: NetworkImage(
-                    snap['image'].toString(),
-                  ),
+                Stack(
+                  children: [
+                    CircleAvatar(
+                      radius: 30,
+                      backgroundColor: Colors.teal,
+                      backgroundImage: NetworkImage(
+                        snap['image'].toString(),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      snap['name'].toString(),
+                      style: TextStyle(
+                        color: Colors.teal[600],
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    Text(
+                        '${DateFormat.yMd().add_jm().format(snap['postTime'].toDate())} '),
+                  ],
+                ),
+                const Spacer(),
+                PopupMenuButton(
+                  onSelected: (value) {
+                    if (value.toString() == '/delete') {
+                      showDialog<String>(
+                        context: context,
+                        builder: (BuildContext context) => AlertDialog(
+                          title: const Text("Delete User"),
+                          content: const Text(
+                              "Are you sure you want to Delete This User?"),
+                          actions: <Widget>[
+                            TextButton(
+                              onPressed: () => Navigator.pop(context, 'NO'),
+                              child: const Text('NO'),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                AuctionCubit.get(context)
+                                    .deletDoc('users', snap['uid'].toString());
+                                Navigator.pop(context, 'YES');
+                              },
+                              child: const Text('YES'),
+                            ),
+                          ],
+                        ),
+                      );
+                    }
+                  },
+                  itemBuilder: (BuildContext bc) {
+                    return const [
+                      PopupMenuItem(
+                        child: Text("delete"),
+                        value: '/delete',
+                      ),
+                    ];
+                  },
                 ),
               ],
             ),
-            const SizedBox(
-              width: 10,
-            ),
             Column(
+              mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                const SizedBox(
+                  height: 5,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      snap['titel'].toString(),
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Colors.teal[600],
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                Container(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                      ' ${DateFormat.yMd().add_jm().format(snap['startAuction'].toDate())}  '),
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                SizedBox(
+                  child: Text(
+                    snap['description'].toString(),
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Colors.teal[600],
+                      fontWeight: FontWeight.w600,
+                    ),
+                    maxLines: 5,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
                 Text(
-                  snap['name'].toString(),
-                  style: TextStyle(
-                    color: Colors.teal[600],
-                    fontSize: 15,
+                  snap['category'].toString(),
+                  style: const TextStyle(
+                    fontSize: 20,
+                    color: Colors.teal,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
+                const SizedBox(
+                  height: 5,
+                ),
                 Text(
-                    '${DateFormat.yMd().add_jm().format(snap['postTime'].toDate())} '),
-              ],
-            ),
-            const Spacer(),
-            PopupMenuButton(
-              onSelected: (value) {
-                if (value.toString() == '/delete') {
-                  showDialog<String>(
-                    context: context,
-                    builder: (BuildContext context) => AlertDialog(
-                      title: const Text("Delete User"),
-                      content: const Text(
-                          "Are you sure you want to Delete This User?"),
-                      actions: <Widget>[
-                        TextButton(
-                          onPressed: () => Navigator.pop(context, 'NO'),
-                          child: const Text('NO'),
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            AuctionCubit.get(context)
-                                .deletDoc('users', snap['uid'].toString());
-                            Navigator.pop(context, 'YES');
-                          },
-                          child: const Text('YES'),
-                        ),
-                      ],
-                    ),
-                  );
-                }
-              },
-              itemBuilder: (BuildContext bc) {
-                return const [
-                  PopupMenuItem(
-                    child: Text("delete"),
-                    value: '/delete',
-                  ),
-                ];
-              },
-            ),
-          ],
-        ),
-        Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(
-              height: 5,
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  snap['titel'].toString(),
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: Colors.teal[600],
-                    fontWeight: FontWeight.bold,
+                  snap['price'].toString(),
+                  style: const TextStyle(
+                    fontSize: 20,
+                    color: Colors.teal,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
               ],
-            ),
-            const SizedBox(
-              height: 5,
             ),
             Container(
-              alignment: Alignment.topLeft,
-              child: Text(
-                  ' ${DateFormat.yMd().add_jm().format(snap['startAuction'].toDate())}  '),
-            ),
-            const SizedBox(
-              height: 5,
-            ),
-            SizedBox(
-              child: Text(
-                snap['description'].toString(),
-                style: TextStyle(
-                  fontSize: 12,
-                  color: Colors.teal[600],
-                  fontWeight: FontWeight.w600,
-                ),
-                maxLines: 5,
-                overflow: TextOverflow.ellipsis,
+              width: 200,
+              height: 200,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                    image: NetworkImage(
+                      snap['postImage'].toString(),
+                    ),
+                    fit: BoxFit.cover),
               ),
             ),
-            const SizedBox(
-              height: 5,
-            ),
-            Text(
-              snap['category'].toString(),
-              style: const TextStyle(
-                fontSize: 20,
-                color: Colors.teal,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            const SizedBox(
-              height: 5,
-            ),
-            Text(
-              snap['price'].toString(),
-              style: const TextStyle(
-                fontSize: 20,
-                color: Colors.teal,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ],
-        ),
-        Container(
-          width: 200,
-          height: 200,
-          decoration: BoxDecoration(
-            image: DecorationImage(
-                image: NetworkImage(
-                  snap['postImage'].toString(),
-                ),
-                fit: BoxFit.cover),
-          ),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextButton(
-                  onPressed: () {},
-                  child: const Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Text(
-                      'Cancel',
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextButton(
+                      onPressed: () {
+                        AuctionCubit.get(context).cancelPost(
+                            postId: snap['postId'].toString(),
+                            colection: 'posts');
+                      },
+                      child: const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Text(
+                          'Cancel',
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextButton(
-                  onPressed: () {},
-                  child: const Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Text(
-                      'accept',
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextButton(
+                      onPressed: () {
+                        AuctionCubit.get(context).acceptPost(
+                            postId: snap['postId'].toString(),
+                            colection: 'posts');
+                      },
+                      child: const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Text(
+                          'accept',
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ),
+              ],
+            )
           ],
-        )
-      ],
+        ),
+      ),
     ),
   );
 }
@@ -261,7 +281,7 @@ Widget Usercard({required dynamic snap, context}) {
 
 
 
-
+ 
   /*
   @override
   Widget build(BuildContext context) {

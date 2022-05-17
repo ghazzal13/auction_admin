@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -15,28 +14,26 @@ class _OnlinePostsScreenState extends State<OnlinePostsScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.teal,
-        title: Text(
+        title: const Text(
           'Online Posts',
           style: TextStyle(
             fontSize: 20,
             color: Colors.white,
           ),
         ),
-
       ),
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
             image: DecorationImage(
-              fit: BoxFit.cover,
-              image: AssetImage(
-                  'assets/BackGround.jpg'),
-            )),
+          fit: BoxFit.cover,
+          image: AssetImage('assets/BackGround.jpg'),
+        )),
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Center(
             child: SingleChildScrollView(
               child: Container(
-                margin: EdgeInsets.only(bottom: 400),
+                margin: const EdgeInsets.only(bottom: 400),
                 child: Column(
                   children: [
                     Padding(
@@ -51,16 +48,15 @@ class _OnlinePostsScreenState extends State<OnlinePostsScreen> {
                             Column(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
-
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Container(
-                                    width: MediaQuery.of(context).size.width *
-                                        0.3,
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.3,
                                     height: 140,
                                     //margin: new EdgeInsets.fromLTRB(200,0,0,0),
                                     // color: Colors.black87,
-                                    decoration: BoxDecoration(
+                                    decoration: const BoxDecoration(
                                       image: DecorationImage(
                                         image: NetworkImage(
                                             "https://i.pinimg.com/564x/70/f9/dd/70f9dd78e5d27729b98d74cdd4c78484.jpg"),
@@ -77,8 +73,8 @@ class _OnlinePostsScreenState extends State<OnlinePostsScreen> {
                                     Container(
                                       child: Row(
                                         children: [
-                                          Padding(
-                                            padding: const EdgeInsets.all(8.0),
+                                          const Padding(
+                                            padding: EdgeInsets.all(8.0),
                                             child: CircleAvatar(
                                               radius: 30,
                                               backgroundColor: Colors.teal,
@@ -117,19 +113,18 @@ class _OnlinePostsScreenState extends State<OnlinePostsScreen> {
                                         borderRadius: BorderRadius.circular(15),
                                         // color: Colors.teal[400],
                                       ),
-                                      child: Text(
+                                      child: const Text(
                                         'First Price',
                                         style: TextStyle(
                                             color: Colors.teal,
                                             fontSize: 20,
-                                            fontWeight: FontWeight.bold
-                                        ),
+                                            fontWeight: FontWeight.bold),
                                       ),
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.all(5.0),
                                       child: Container(
-                                        child: Text(
+                                        child: const Text(
                                           'Category',
                                           style: TextStyle(
                                             fontSize: 20,
@@ -166,13 +161,10 @@ class _OnlinePostsScreenState extends State<OnlinePostsScreen> {
                                         ),
                                       ),
                                     ),
-
                                   ],
                                 ),
-
                               ],
                             ),
-
                           ],
                         ),
                       ),
@@ -186,7 +178,7 @@ class _OnlinePostsScreenState extends State<OnlinePostsScreen> {
                               alignment: Alignment.bottomLeft,
                               child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
-                                  minimumSize: Size(180, 40),
+                                  minimumSize: const Size(180, 40),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(30),
                                   ),
@@ -194,7 +186,7 @@ class _OnlinePostsScreenState extends State<OnlinePostsScreen> {
                                 ),
                                 child: Container(
                                   //margin: EdgeInsets.all(8.0),
-                                  child: Text(
+                                  child: const Text(
                                     'Submit',
                                     style: TextStyle(
                                       color: Colors.white,
@@ -216,7 +208,7 @@ class _OnlinePostsScreenState extends State<OnlinePostsScreen> {
                           child: Container(
                             child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
-                                minimumSize: Size(180, 40),
+                                minimumSize: const Size(180, 40),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(30),
                                 ),
@@ -224,7 +216,7 @@ class _OnlinePostsScreenState extends State<OnlinePostsScreen> {
                               ),
                               child: Container(
                                 // margin: EdgeInsets.all(8.0),
-                                child: Text(
+                                child: const Text(
                                   'Cancel',
                                   style: TextStyle(
                                     color: Colors.white,
@@ -241,8 +233,6 @@ class _OnlinePostsScreenState extends State<OnlinePostsScreen> {
                         ),
                       ],
                     ),
-
-
                   ],
                 ),
               ),
@@ -252,29 +242,33 @@ class _OnlinePostsScreenState extends State<OnlinePostsScreen> {
       ),
     );
   }
+
   void showDialog() {
     showCupertinoDialog(
       context: context,
       builder: (context) {
         return CupertinoAlertDialog(
-          title: Text("Submit Post"),
-          content: Text("Are you sure you want to Submit This Post?"),
+          title: const Text("Submit Post"),
+          content: const Text("Are you sure you want to Submit This Post?"),
           actions: [
             CupertinoDialogAction(
-                child: Text("YES"),
+                child: const Text("YES"),
                 onPressed: () {
-                  Navigator.push(context,MaterialPageRoute(
-                    builder: (context) => OnlinePostsScreen(),
-                  ),
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const OnlinePostsScreen(),
+                    ),
                   );
-                }
-            ),
+                }),
             CupertinoDialogAction(
-              child: Text("NO"),
+              child: const Text("NO"),
               onPressed: () {
-                Navigator.push(context,MaterialPageRoute(
-                  builder: (context) => OnlinePostsScreen(),
-                ),
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const OnlinePostsScreen(),
+                  ),
                 );
               },
             ),
@@ -283,29 +277,33 @@ class _OnlinePostsScreenState extends State<OnlinePostsScreen> {
       },
     );
   }
+
   void ShowDialog() {
     showCupertinoDialog(
       context: context,
       builder: (context) {
         return CupertinoAlertDialog(
-          title: Text("Cancel Post"),
-          content: Text("Are you sure you want to Cancel This Post?"),
+          title: const Text("Cancel Post"),
+          content: const Text("Are you sure you want to Cancel This Post?"),
           actions: [
             CupertinoDialogAction(
-                child: Text("YES"),
+                child: const Text("YES"),
                 onPressed: () {
-                  Navigator.push(context,MaterialPageRoute(
-                    builder: (context) => OnlinePostsScreen(),
-                  ),
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const OnlinePostsScreen(),
+                    ),
                   );
-                }
-            ),
+                }),
             CupertinoDialogAction(
-              child: Text("NO"),
+              child: const Text("NO"),
               onPressed: () {
-                Navigator.push(context,MaterialPageRoute(
-                  builder: (context) => OnlinePostsScreen(),
-                ),
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const OnlinePostsScreen(),
+                  ),
                 );
               },
             ),

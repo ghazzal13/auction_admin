@@ -1,6 +1,6 @@
 import 'package:auction_admin/cubit/cubit.dart';
 import 'package:auction_admin/cubit/states.dart';
-import 'package:auction_admin/home_screens/main_management_categories_screen.dart';
+import 'package:auction_admin/home_screens/management_report_screen.dart';
 import 'package:auction_admin/home_screens/managment_clients_screen.dart';
 import 'package:auction_admin/home_screens/mangement_post_screen.dart';
 import 'package:auction_admin/home_screens/management_request_screen.dart';

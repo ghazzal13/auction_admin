@@ -65,133 +65,142 @@ class _ManagmentPostTradeScreenState extends State<ManagmentPostTradeScreen> {
 Widget Usercard({required dynamic snap, context}) {
   return Padding(
     padding: const EdgeInsets.all(20.0),
-    child: Column(
-      children: [
-        Row(
+    child: Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(2),
+        color: Colors.black12,
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
           children: [
-            Stack(
+            Row(
               children: [
-                CircleAvatar(
-                  radius: 30,
-                  backgroundColor: Colors.teal,
-                  backgroundImage: NetworkImage(
-                    snap['image'].toString(),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(
-              width: 10,
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  snap['name'].toString(),
-                  style: TextStyle(
-                    color: Colors.teal[600],
-                    fontSize: 15,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                Text(
-                    '${DateFormat.yMd().add_jm().format(snap['datePublished'].toDate())} '),
-              ],
-            ),
-            const Spacer(),
-            PopupMenuButton(
-              onSelected: (value) {
-                if (value.toString() == '/delete') {
-                  showDialog<String>(
-                    context: context,
-                    builder: (BuildContext context) => AlertDialog(
-                      title: const Text("Delete User"),
-                      content: const Text(
-                          "Are you sure you want to Delete This User?"),
-                      actions: <Widget>[
-                        TextButton(
-                          onPressed: () => Navigator.pop(context, 'NO'),
-                          child: const Text('NO'),
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            AuctionCubit.get(context)
-                                .deletDoc('users', snap['uid'].toString());
-                            Navigator.pop(context, 'YES');
-                          },
-                          child: const Text('YES'),
-                        ),
-                      ],
+                Stack(
+                  children: [
+                    CircleAvatar(
+                      radius: 30,
+                      backgroundColor: Colors.teal,
+                      backgroundImage: NetworkImage(
+                        snap['image'].toString(),
+                      ),
                     ),
-                  );
-                }
-              },
-              itemBuilder: (BuildContext bc) {
-                return const [
-                  PopupMenuItem(
-                    child: Text("delete"),
-                    value: '/delete',
-                  ),
-                ];
-              },
-            ),
-          ],
-        ),
-        Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(
-              height: 5,
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  snap['titel'].toString(),
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: Colors.teal[600],
-                    fontWeight: FontWeight.bold,
-                  ),
+                  ],
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      snap['name'].toString(),
+                      style: TextStyle(
+                        color: Colors.teal[600],
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    Text(
+                        '${DateFormat.yMd().add_jm().format(snap['datePublished'].toDate())} '),
+                  ],
+                ),
+                const Spacer(),
+                PopupMenuButton(
+                  onSelected: (value) {
+                    if (value.toString() == '/delete') {
+                      showDialog<String>(
+                        context: context,
+                        builder: (BuildContext context) => AlertDialog(
+                          title: const Text("Delete User"),
+                          content: const Text(
+                              "Are you sure you want to Delete This User?"),
+                          actions: <Widget>[
+                            TextButton(
+                              onPressed: () => Navigator.pop(context, 'NO'),
+                              child: const Text('NO'),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                AuctionCubit.get(context)
+                                    .deletDoc('users', snap['uid'].toString());
+                                Navigator.pop(context, 'YES');
+                              },
+                              child: const Text('YES'),
+                            ),
+                          ],
+                        ),
+                      );
+                    }
+                  },
+                  itemBuilder: (BuildContext bc) {
+                    return const [
+                      PopupMenuItem(
+                        child: Text("delete"),
+                        value: '/delete',
+                      ),
+                    ];
+                  },
                 ),
               ],
             ),
-            const SizedBox(
-              height: 5,
-            ),
-            const SizedBox(
-              height: 5,
-            ),
-            SizedBox(
-              child: Text(
-                snap['description'].toString(),
-                style: TextStyle(
-                  fontSize: 12,
-                  color: Colors.teal[600],
-                  fontWeight: FontWeight.w600,
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(
+                  height: 5,
                 ),
-                maxLines: 5,
-                overflow: TextOverflow.ellipsis,
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      snap['titel'].toString(),
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Colors.teal[600],
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                SizedBox(
+                  child: Text(
+                    snap['description'].toString(),
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Colors.teal[600],
+                      fontWeight: FontWeight.w600,
+                    ),
+                    maxLines: 5,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+              ],
+            ),
+            Container(
+              width: 200,
+              height: 200,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                    image: NetworkImage(
+                      snap['tradeItemImage'].toString(),
+                    ),
+                    fit: BoxFit.cover),
               ),
             ),
-            const SizedBox(
-              height: 5,
-            ),
           ],
         ),
-        Container(
-          width: 200,
-          height: 200,
-          decoration: BoxDecoration(
-            image: DecorationImage(
-                image: NetworkImage(
-                  snap['tradeItemImage'].toString(),
-                ),
-                fit: BoxFit.cover),
-          ),
-        ),
-      ],
+      ),
     ),
   );
 }

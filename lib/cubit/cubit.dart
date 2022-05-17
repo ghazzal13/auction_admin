@@ -55,4 +55,33 @@ class AuctionCubit extends Cubit<AuctionStates> {
   void deletDoc(String colection, String postId) {
     FirebaseFirestore.instance.collection(colection).doc(postId).delete();
   }
+
+  void acceptPost({
+    required String? postId,
+    required String? colection,
+  }) {
+    FirebaseFirestore.instance.collection(colection!).doc(postId).set({
+      'isaccept': true,
+      'isWaiting': false,
+    }, SetOptions(merge: true));
+  }
+
+  void cancelPost({
+    required String? postId,
+    required String? colection,
+  }) {
+    FirebaseFirestore.instance.collection(colection!).doc(postId).set({
+      'isWaiting': false,
+    }, SetOptions(merge: true));
+  }
+
+  Future cancelReport({
+    required String? postId,
+    required String? colection,
+  }) async {
+    FirebaseFirestore.instance.collection(colection!).doc(postId).set({
+      'cancelReport': true,
+    }, SetOptions(merge: true));
+  }
+//
 }
