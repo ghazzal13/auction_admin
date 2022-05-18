@@ -1,3 +1,4 @@
+import 'package:auction_admin/cubit/cubit.dart';
 import 'package:auction_admin/start_screen.dart';
 import 'package:auction_admin/utils/global_variable.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,8 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,6 +48,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     height: 55,
                     child: TextField(
+                      controller: _emailController,
                       decoration: InputDecoration(
                         enabledBorder: OutlineInputBorder(
                           borderSide: const BorderSide(
@@ -74,6 +78,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     height: 55,
                     child: TextField(
+                      controller: _passwordController,
                       decoration: InputDecoration(
                         enabledBorder: OutlineInputBorder(
                           borderSide: const BorderSide(
@@ -94,19 +99,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                 ),
-                // Container(
-                //   alignment: Alignment.bottomRight,
-                //   child: TextButton(
-                //       onPressed: () {},
-                //       child: const Text(
-                //         'Forget Password',
-                //         style: TextStyle(
-                //           color: Colors.black,
-                //           fontSize: 16,
-                //           fontWeight: FontWeight.w500,
-                //         ),
-                //       )),
-                // ),
                 Padding(
                   padding: const EdgeInsets.all(20),
                   child: Container(
@@ -122,12 +114,17 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     child: TextButton(
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const StartScreen(),
-                            ),
-                          );
+                          if (_emailController.text == 'admin123@gmail.com' &&
+                              _passwordController.text == '000000') {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const StartScreen(),
+                              ),
+                            );
+                          } else {
+                            showToast(text: ' Error', state: ToastStates.ERROR);
+                          }
                         },
                         child: Text(
                           'Login',
