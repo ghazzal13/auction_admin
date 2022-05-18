@@ -227,7 +227,7 @@ Widget Usercard({required dynamic snap, context}) {
                     padding: const EdgeInsets.all(8.0),
                     child: TextButton(
                       onPressed: () {
-                        AuctionCubit.get(context).cancelPost(
+                        AuctionCubit.get(context).acceptPost(
                             postId: snap['tradeItemId'].toString(),
                             colection: 'tradeitem');
                       },
