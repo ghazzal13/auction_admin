@@ -7,6 +7,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 
+import 'user.dart' as model2;
+
 class AuctionCubit extends Cubit<AuctionStates> {
   AuctionCubit() : super(AuctionInitialState());
 
@@ -84,6 +86,27 @@ class AuctionCubit extends Cubit<AuctionStates> {
     FirebaseFirestore.instance.collection(colection!).doc(postId).set({
       'cancelReport': true,
     }, SetOptions(merge: true));
+  }
+
+  model2.UserModel usermodel = model2.UserModel();
+  Future<model2.UserModel> getUserProfile(id) async {
+    emit(AuctionGetUserLoadingState());
+    String? uid;
+    await FirebaseFirestore.instance
+        .collection("users")
+        .doc(id)
+        .get()
+        .then((value) {
+      print(value.data());
+
+      usermodel = model2.UserModel.fromMap(value.data());
+
+      emit(AuctionGetUserSuccessState());
+    }).catchError((error) {
+      print(error.toString());
+      emit(AuctionGetUserErrorState(error.toString()));
+    });
+    return usermodel;
   }
 //
 }

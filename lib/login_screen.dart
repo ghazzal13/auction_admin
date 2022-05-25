@@ -2,6 +2,7 @@ import 'package:auction_admin/cubit/cubit.dart';
 import 'package:auction_admin/start_screen.dart';
 import 'package:auction_admin/utils/global_variable.dart';
 import 'package:flutter/material.dart';
+import 'package:form_validator/form_validator.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -13,6 +14,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  var formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,25 +32,29 @@ class _LoginScreenState extends State<LoginScreen> {
         )),
         child: Center(
           child: SingleChildScrollView(
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(50),
-                  child: Container(
-                      child: const Image(
-                    image: AssetImage('assets/logo1.png'),
-                  )),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: Container(
+            child: Form(
+              key: formKey,
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(50),
+                    child: Container(
+                        child: const Image(
+                      image: AssetImage('assets/logo1.png'),
+                    )),
+                  ),
+                  Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(40),
                       color: Colors.teal.withOpacity(0.1),
                     ),
                     height: 55,
-                    child: TextField(
+                    child: TextFormField(
                       controller: _emailController,
+                      validator:
+                          ValidationBuilder(requiredMessage: 'can not be empty')
+                              .email()
+                              .build(),
                       decoration: InputDecoration(
                         enabledBorder: OutlineInputBorder(
                           borderSide: const BorderSide(
@@ -68,17 +74,22 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: Container(
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(40),
                       color: Colors.teal.withOpacity(0.1),
                     ),
                     height: 55,
-                    child: TextField(
+                    child: TextFormField(
                       controller: _passwordController,
+                      validator:
+                          ValidationBuilder(requiredMessage: 'can not be empty')
+                              .minLength(6)
+                              .maxLength(50)
+                              .build(),
                       decoration: InputDecoration(
                         enabledBorder: OutlineInputBorder(
                           borderSide: const BorderSide(
@@ -98,45 +109,49 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: Container(
-                    width: MediaQuery.of(context).size.width * 0.5,
-                    height: 60,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(25),
-                      gradient: LinearGradient(colors: [
-                        Colors.teal.shade200,
-                        Colors.greenAccent.shade100
-                      ]),
+                  Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width * 0.5,
+                      height: 60,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(25),
+                        gradient: LinearGradient(colors: [
+                          Colors.teal.shade200,
+                          Colors.greenAccent.shade100
+                        ]),
+                      ),
+                      child: TextButton(
+                          onPressed: () {
+                            if (formKey.currentState!.validate()) {
+                              if (_emailController.text ==
+                                      'admin123@gmail.com' &&
+                                  _passwordController.text == '000000') {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const StartScreen(),
+                                  ),
+                                );
+                              } else {
+                                showToast(
+                                    text: ' Error', state: ToastStates.ERROR);
+                              }
+                            }
+                          },
+                          child: Text(
+                            'Login',
+                            style: TextStyle(
+                              color: Colors.teal[600],
+                              fontWeight: FontWeight.w500,
+                              fontSize: 30,
+                            ),
+                          )),
                     ),
-                    child: TextButton(
-                        onPressed: () {
-                          if (_emailController.text == 'admin123@gmail.com' &&
-                              _passwordController.text == '000000') {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const StartScreen(),
-                              ),
-                            );
-                          } else {
-                            showToast(text: ' Error', state: ToastStates.ERROR);
-                          }
-                        },
-                        child: Text(
-                          'Login',
-                          style: TextStyle(
-                            color: Colors.teal[600],
-                            fontWeight: FontWeight.w500,
-                            fontSize: 30,
-                          ),
-                        )),
-                  ),
-                )
-              ],
+                  )
+                ],
+              ),
             ),
           ),
         ),
