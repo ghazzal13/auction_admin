@@ -121,8 +121,8 @@ Widget Usercard({required dynamic snap, context}) {
                             ),
                             TextButton(
                               onPressed: () {
-                                AuctionCubit.get(context)
-                                    .deletDoc('users', snap['uid'].toString());
+                                AuctionCubit.get(context).deletDoc(
+                                    'posts', snap['postId'].toString());
                                 Navigator.pop(context, 'YES');
                               },
                               child: const Text('YES'),

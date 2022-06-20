@@ -73,7 +73,7 @@ class MyApp extends StatelessWidget {
 /*
  
  
- flutter run -d chrome --web-renderer html
+ flutter run -d chrome --web-renderer html  --release
  
 admin123@gmail.com
   
